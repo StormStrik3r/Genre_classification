@@ -3,11 +3,11 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python
-  - requests
-  - pip
-  - pandas
-  - scikit-learn
-  - mlflow
+  - python=3.10
+  - requests=2.31.0
+  - pip=23.3.1
+  - pandas=2.2.1
+  - scikit-learn=1.0.2
+  - mlflow=2.8.1
   - pip:
-      - wandb
+      - wandb==0.16.4
