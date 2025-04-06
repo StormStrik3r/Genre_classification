@@ -6,7 +6,7 @@ from omegaconf import DictConfig, OmegaConf
 
 
 # This automatically reads in the configuration
-@hydra.main(config_name='config')
+@hydra.main(version_base='1.3.2', config_path="/home/corbin/Genre_classification/", config_name="config")
 def go(config: DictConfig):
 
     wandb.config = OmegaConf.to_container(
@@ -22,13 +22,15 @@ def go(config: DictConfig):
     # You can get the path at the root of the MLflow project with this:
     root_path = hydra.utils.get_original_cwd()
 
-    # Check which steps we need to execute
+   # Check which steps we need to execute
     if isinstance(config["main"]["execute_steps"], str):
         # This was passed on the command line as a comma-separated list of steps
         steps_to_execute = config["main"]["execute_steps"].split(",")
     else:
-        assert isinstance(config["main"]["execute_steps"], list)
-        steps_to_execute = config["main"]["execute_steps"]
+
+        steps_to_execute = list(config["main"]["execute_steps"])
+
+    print(f"Steps to execute: {steps_to_execute}")
 
     # Download step
     if "download" in steps_to_execute:
@@ -58,7 +60,7 @@ def go(config: DictConfig):
         )
 
     if "check_data" in steps_to_execute:
-        _ - mlflow.run(
+        _ = mlflow.run(
             os.path.join(root_path, "check_data"),
             "main",
             parameters={
